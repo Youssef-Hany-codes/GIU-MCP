@@ -87,7 +87,7 @@ jobs:
           ## Install
 
           **Claude Desktop (no terminal):** download **giu-mcp.mcpb** below. In Claude, open
-          **Settings → Extensions → Advanced settings → Install Extension…**, pick the file,
+          **Settings → Desktop app → Extensions → Advanced settings → Install extension**, pick the file,
           and enter your GIU username and password.
 
           **Other AI apps (Claude Code, Cursor, VS Code, …):** with [uv](https://docs.astral.sh/uv/)

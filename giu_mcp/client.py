@@ -109,7 +109,7 @@ class GiuClient:
         if resp.status_code == 401:
             raise AuthError(
                 "GIU rejected the username/password (HTTP 401). With the Claude Desktop "
-                "extension, fix them in Settings > Extensions > GIU MCP; otherwise "
+                "extension, fix them in Settings > Desktop app > Extensions > GIU MCP > Configure; otherwise "
                 "run `giu-mcp login` again."
             )
         return resp

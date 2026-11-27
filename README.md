@@ -47,21 +47,26 @@ and others.
 
 ## Install
 
-### Claude Desktop: one click, no terminal
+### Claude Desktop: no terminal
 
 1. **[Download giu-mcp.mcpb](https://github.com/Youssef-Hany-codes/GIU-MCP/releases/latest/download/giu-mcp.mcpb)**
    (always the newest version).
-2. In Claude Desktop, open **Settings → Extensions → Advanced settings** and click
-   **Install Extension…**, then pick the file you downloaded.
-   (Double-clicking the file only works on some installs. On Windows, the Microsoft
+2. In Claude Desktop, open **Settings → Desktop app → Extensions → Advanced settings**,
+   click **Install extension**, and pick the file you downloaded.
+
+   <img src="https://raw.githubusercontent.com/Youssef-Hany-codes/GIU-MCP/main/assets/screenshots/install-extension.png" alt="Claude settings: Desktop app, then Extensions, Advanced settings, Install extension" width="640">
+
+   Double-clicking the file only works on some installs. On Windows, the Microsoft
    Store version of Claude doesn't register `.mcpb` files, so Windows will say it has
-   no app to open it.)
-3. Fill in your **GIU username and password**, the same ones you use on the portal, and
-   enable the extension.
+   no app to open it.
+3. Fill in your **GIU username and password**, the same ones you use on the portal, then
+   click **Save** and enable the extension.
+
+   <img src="https://raw.githubusercontent.com/Youssef-Hany-codes/GIU-MCP/main/assets/screenshots/configure-form.png" alt="The GIU MCP settings form: GIU username, GIU password, optional download folder" width="480">
 
 That's it: you don't need to install Python or anything else first. The very first start
 takes a few seconds while Claude Desktop sets it up. To change your password later, go to
-Settings → Extensions → GIU MCP.
+**Settings → Desktop app → Extensions → GIU MCP → Configure**.
 
 ### Any other AI app (Claude Code, Cursor, VS Code, …)
 
@@ -154,9 +159,9 @@ folder (`uvx giu-mcp status` shows where that is).
 ## Troubleshooting
 
 - **"No GIU account is set up"**: run `uvx giu-mcp login` in a terminal. With the
-  Claude Desktop extension, fill in Settings → Extensions → GIU MCP instead.
+  Claude Desktop extension, fill in Settings → Desktop app → Extensions → GIU MCP → Configure instead.
 - **"GIU rejected the username/password"**: your password probably changed. Update it
-  in Settings → Extensions → GIU MCP (extension) or run `uvx giu-mcp login` again.
+  in Settings → Desktop app → Extensions → GIU MCP → Configure (extension) or run `uvx giu-mcp login` again.
 - **A tool returns a "Portal message"**: that page is closed on the portal right now
   (for example, outside its registration or evaluation window).
 - **Tools disappeared after an update**: restart the AI app.
