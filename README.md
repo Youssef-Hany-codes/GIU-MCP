@@ -72,7 +72,8 @@ takes a few seconds while Claude Desktop sets it up. To change your password lat
 
 **Updates:** Claude Desktop doesn't update extensions installed from a file on its own.
 When a new version is out, GIU MCP tells you in the chat. Then download the file again
-from the link above and install it the same way.
+from the link above and install it the same way. Your saved username and password are
+kept, so there's nothing to fill in again.
 
 ### Any other AI app (Claude Code, Cursor, VS Code, …)
 

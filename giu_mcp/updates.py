@@ -85,7 +85,8 @@ def how_to_update(kind: str) -> str:
     if kind == "extension":
         return (
             f"Download the new giu-mcp.mcpb from {DOWNLOAD_URL} and install it in Claude Desktop via "
-            "Settings > Desktop app > Extensions > Advanced settings > Install extension."
+            "Settings > Desktop app > Extensions > Advanced settings > Install extension. "
+            "Their saved GIU login is kept."
         )
     if kind == "uvx":
         return (
