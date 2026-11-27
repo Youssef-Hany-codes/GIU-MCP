@@ -2,16 +2,18 @@
 
 from __future__ import annotations
 
+import base64
 import functools
+from pathlib import Path
 from typing import Any, Callable
 
 import anyio
 import requests
 from mcp.server.mcpserver import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
-from mcp.types import ToolAnnotations
+from mcp.types import Icon, ToolAnnotations
 
-from . import __version__, cms, portal
+from . import __version__, cms, portal, prompts
 from .client import GiuError, get_client
 from .config import ConfigError
 
@@ -29,7 +31,24 @@ and course management system (cms.giu-uni.de), signed in as the student.
 - All tools only read data; nothing is submitted, registered or paid on the user's behalf.
 """
 
-mcp = MCPServer(name="giu", title="GIU Portal & CMS", version=__version__, instructions=INSTRUCTIONS)
+def _icons() -> list[Icon]:
+    """The app icon, inlined as a data URI so apps that show server icons can display it."""
+    try:
+        data = Path(__file__).with_name("icon.png").read_bytes()
+    except OSError:
+        return []
+    src = "data:image/png;base64," + base64.b64encode(data).decode("ascii")
+    return [Icon(src=src, mime_type="image/png", sizes=["128x128"])]
+
+
+mcp = MCPServer(
+    name="giu",
+    title="GIU MCP",
+    version=__version__,
+    instructions=INSTRUCTIONS,
+    website_url="https://github.com/Youssef-Hany-codes/GIU-MCP",
+    icons=_icons(),
+)
 
 READ = ToolAnnotations(readOnlyHint=True, openWorldHint=True)
 WRITE_LOCAL = ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=True, openWorldHint=True)
@@ -196,6 +215,9 @@ async def cms_download(
     Videos are skipped unless `include_videos=True`.
     """
     return await _run(cms.download, course, season_id, content_ids, week, content_type, include_videos, overwrite)
+
+
+prompts.register(mcp)
 
 
 def main() -> None:

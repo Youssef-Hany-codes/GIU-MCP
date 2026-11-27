@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "giu-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "MCP server for the GIU student portal and CMS"
 readme = "README.md"
 license = "PolyForm-Noncommercial-1.0.0"
@@ -38,3 +38,6 @@ giu-mcp = "giu_mcp.cli:main"
 
 [tool.setuptools]
 packages = ["giu_mcp"]
+
+[tool.setuptools.package-data]
+giu_mcp = ["icon.png"]

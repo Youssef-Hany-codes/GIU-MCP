@@ -108,8 +108,9 @@ class GiuClient:
                 resp = self.session.request(method, url, allow_redirects=False, **kw)
         if resp.status_code == 401:
             raise AuthError(
-                "GIU rejected the username/password (HTTP 401). Check GIU_USERNAME, "
-                "GIU_PASSWORD and, if needed, GIU_DOMAIN."
+                "GIU rejected the username/password (HTTP 401). With the Claude Desktop "
+                "extension, fix them in Settings > Extensions > GIU MCP; otherwise "
+                "run `giu-mcp login` again."
             )
         return resp
 

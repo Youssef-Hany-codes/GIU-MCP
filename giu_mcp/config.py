@@ -54,8 +54,15 @@ def env_files() -> list[Path]:
     return files
 
 
+def _env(name: str) -> str:
+    """An environment variable, ignoring placeholders an app left unexpanded (e.g. an
+    empty optional field in a Claude Desktop extension arriving as "${user_config.x}")."""
+    value = os.environ.get(name, "")
+    return "" if value.strip().startswith("${") else value
+
+
 def _setting(name: str, dotenv: dict) -> str:
-    return (os.environ.get(name) or dotenv.get(name) or "").strip()
+    return (_env(name) or dotenv.get(name) or "").strip()
 
 
 def load_settings() -> Settings:
@@ -68,9 +75,9 @@ def load_settings() -> Settings:
                 dotenv_source = str(f)
             dotenv.update(values)
 
-    username = os.environ.get("GIU_USERNAME", "").strip()
-    password = os.environ.get("GIU_PASSWORD", "")
-    domain = os.environ.get("GIU_DOMAIN", "").strip()
+    username = _env("GIU_USERNAME").strip()
+    password = _env("GIU_PASSWORD")
+    domain = _env("GIU_DOMAIN").strip()
     source = "environment variables"
     if not (username and password):
         stored = credentials.load()

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 350" width="400" height="350" role="img" aria-label="University MCP logo, stacked">
+  <title>University MCP</title>
+  <defs>
+    <clipPath id="tile-s"><rect width="512" height="512" rx="112"/></clipPath>
+    <filter id="shadow-s" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="#000000" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+  <!-- app icon, unchanged, scaled to 192px -->
+  <svg x="104" y="28" width="192" height="192" viewBox="0 0 512 512" overflow="visible">
+    <rect width="512" height="512" rx="112" fill="#FFFFFF" filter="url(#shadow-s)"/>
+    <g clip-path="url(#tile-s)">
+      <rect width="512" height="512" fill="#FFFFFF"/>
+      <rect y="452" width="171" height="60" fill="#1A1A1A"/>
+      <rect x="171" y="452" width="170" height="60" fill="#DD0000"/>
+      <rect x="341" y="452" width="171" height="60" fill="#FFCE00"/>
+    </g>
+    <g transform="translate(46,40) scale(1.75)">
+      <path d="M60,103 L120,130 L180,103 V148 C165,162 145,170 120,170 C95,170 75,162 60,148 Z" fill="#DD0000"/>
+      <polygon points="120,40 220,85 120,130 20,85" fill="#1A1A1A" stroke="#FFFFFF" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M120,85 L200,94 V146" fill="none" stroke="#FFCE00" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="120" cy="85" r="9" fill="#FFCE00"/>
+      <rect x="186" y="144" width="28" height="28" rx="6" fill="#FFCE00"/>
+      <rect x="192" y="170" width="5" height="16" rx="2" fill="#FFCE00"/>
+      <rect x="203" y="170" width="5" height="16" rx="2" fill="#FFCE00"/>
+    </g>
+  </svg>
+  <text x="200" y="306" text-anchor="middle" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="68" font-weight="700" letter-spacing="-1" fill="#1A1A1A">GIU MCP</text>
+</svg>

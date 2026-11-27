@@ -1,0 +1,99 @@
+name: Release
+
+# Publish a release by pushing a tag that matches the version in pyproject.toml:
+#
+#   git tag v0.2.0 && git push origin v0.2.0
+#
+# This builds the Python package and the Claude Desktop extension, then
+#   - publishes the package to PyPI with Trusted Publishing (no tokens or passwords), and
+#   - creates a GitHub Release with the extension attached as giu-mcp.mcpb, so
+#     https://github.com/Youssef-Hany-codes/GIU-MCP/releases/latest/download/giu-mcp.mcpb
+#     always downloads the newest one.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Check the tag matches the version in pyproject.toml
+        run: |
+          version=$(uv run --no-project python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match version $version in pyproject.toml"
+            exit 1
+          fi
+
+      - name: Build the Python package
+        run: uv build --out-dir dist/python
+
+      - name: Build the Claude Desktop extension
+        run: |
+          uv run python scripts/build_extension.py
+          mkdir -p dist/release
+          cp dist/giu-mcp-*.mcpb dist/release/giu-mcp.mcpb
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: python-package
+          path: dist/python/
+      - uses: actions/upload-artifact@v7
+        with:
+          name: extension
+          path: dist/release/giu-mcp.mcpb
+
+  pypi:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/giu-mcp
+    permissions:
+      id-token: write # Trusted Publishing
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: python-package
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the release
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: extension
+          path: dist/
+      - name: Create the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          cat > notes.md <<'EOF'
+          ## Install
+
+          **Claude Desktop (no terminal):** download **giu-mcp.mcpb** below. In Claude, open
+          **Settings → Extensions → Advanced settings → Install Extension…**, pick the file,
+          and enter your GIU username and password.
+
+          **Other AI apps (Claude Code, Cursor, VS Code, …):** with [uv](https://docs.astral.sh/uv/)
+          installed, run `uvx giu-mcp login`, then `uvx giu-mcp config` for your app's setup snippet.
+
+          Full guide: [README](https://github.com/Youssef-Hany-codes/GIU-MCP#readme)
+          EOF
+          gh release create "$GITHUB_REF_NAME" dist/giu-mcp.mcpb \
+            --title "GIU MCP $GITHUB_REF_NAME" --notes-file notes.md --verify-tag

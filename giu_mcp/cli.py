@@ -16,6 +16,8 @@ CLIENTS = ["claude-code", "claude-desktop", "cursor", "vscode", "windsurf", "gem
 
 def _launch_command() -> tuple[str, list[str]]:
     """How an AI app should start this server on this machine."""
+    if any(part.startswith("archive-v") for part in Path(sys.executable).parts):
+        return "uvx", ["giu-mcp"]  # running via `uvx giu-mcp`: its cache path isn't stable
     exe = shutil.which("giu-mcp")
     if exe and Path(exe).resolve().parent != Path(sys.executable).resolve().parent:
         return exe, []  # installed as a tool (pipx / uv tool): stable path on PATH
