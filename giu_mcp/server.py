@@ -13,7 +13,7 @@ from mcp.server.mcpserver import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 from mcp.types import Icon, ToolAnnotations
 
-from . import __version__, cms, portal, prompts
+from . import __version__, cms, portal, prompts, updates
 from .client import GiuError, get_client
 from .config import ConfigError
 
@@ -29,6 +29,7 @@ and course management system (cms.giu-uni.de), signed in as the student.
   then cms_read_file (text of a PDF/PPTX/DOCX) or cms_download (save to disk).
 - Courses can be named by code ("INCS101"), name ("Databases") or CMS id.
 - All tools only read data; nothing is submitted, registered or paid on the user's behalf.
+- If a result contains `update_notice`, pass it on to the user once, briefly.
 """
 
 def _icons() -> list[Icon]:
@@ -61,7 +62,10 @@ async def _run(fn: Callable[..., Any], *args, **kwargs) -> Any:
     names) reaches the model; anything else is a crash and stays opaque.
     """
     try:
-        return await anyio.to_thread.run_sync(functools.partial(fn, get_client(), *args, **kwargs))
+        result = await anyio.to_thread.run_sync(functools.partial(fn, get_client(), *args, **kwargs))
+        if isinstance(result, dict) and (notice := updates.checker.take_notice()):
+            result = {**result, "update_notice": notice}  # once per run, when a newer release exists
+        return result
     except (ValueError, GiuError, ConfigError) as e:
         raise ToolError(str(e)) from e
     except requests.Timeout as e:
@@ -221,6 +225,7 @@ prompts.register(mcp)
 
 
 def main() -> None:
+    updates.checker.start()  # background, at most one PyPI request a day
     mcp.run()
 
 

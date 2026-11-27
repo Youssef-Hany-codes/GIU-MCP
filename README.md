@@ -41,6 +41,8 @@ and others.
   Service).
 - Your password is only ever sent to `portal.giu-uni.de` and `cms.giu-uni.de`. Every
   redirect is checked first, so it is never sent anywhere else.
+- Once a day it asks `pypi.org` whether a newer version of GIU MCP exists. That request
+  carries nothing about you. Set `GIU_NO_UPDATE_CHECK=1` to turn it off.
 - **Read-only.** It never submits anything: no registration, evaluations, excuses,
   uploads or payments. The only thing it writes is files you ask it to download, saved
   to your own Downloads folder.
@@ -68,6 +70,10 @@ That's it: you don't need to install Python or anything else first. The very fir
 takes a few seconds while Claude Desktop sets it up. To change your password later, go to
 **Settings → Desktop app → Extensions → GIU MCP → Configure**.
 
+**Updates:** Claude Desktop doesn't update extensions installed from a file on its own.
+When a new version is out, GIU MCP tells you in the chat. Then download the file again
+from the link above and install it the same way.
+
 ### Any other AI app (Claude Code, Cursor, VS Code, …)
 
 You need [uv](https://docs.astral.sh/uv/). It also installs Python for you, so nothing
@@ -88,11 +94,16 @@ uvx giu-mcp config    # prints the exact snippet for your AI app
 
 `uvx` downloads `giu-mcp` from [PyPI](https://pypi.org/project/giu-mcp/) and runs it; there
 is no separate install step. Use the same username and password as the browser sign-in
-box on the portal. To get a newer version later, run `uvx --refresh giu-mcp --version`
-and restart your AI app.
+box on the portal.
+
+**Updates are automatic:** the snippet from `config` starts the server with
+`uvx giu-mcp@latest`, which checks PyPI each time your AI app starts it. (If you set it up
+earlier with plain `uvx giu-mcp`, change it to `uvx giu-mcp@latest`.)
 
 > Prefer a permanent install? `uv tool install giu-mcp` (or `pipx install giu-mcp`), then
-> use `giu-mcp login` / `giu-mcp config` without the `uvx`.
+> use `giu-mcp login` / `giu-mcp config` without the `uvx`. Update it with
+> `uv tool upgrade giu-mcp` (or `pipx upgrade giu-mcp`); GIU MCP tells you in the chat
+> when there's something to update.
 
 Then add the server to your app with the snippet `config` printed:
 
@@ -155,6 +166,7 @@ folder (`uvx giu-mcp status` shows where that is).
 | `GIU_DOMAIN` | Windows domain, only if sign-in fails without it |
 | `GIU_DOWNLOAD_DIR` | Where `cms_download` saves files (default `~/Downloads/GIU`) |
 | `GIU_TIMEOUT` | Request timeout in seconds (default 45) |
+| `GIU_NO_UPDATE_CHECK` | Set to `1` to stop the daily check for a newer version |
 
 ## Troubleshooting
 

@@ -68,7 +68,9 @@ def manifest(version: str, tools: list[dict], prompts: list[dict]) -> dict:
             "portal.giu-uni.de and cms.giu-uni.de as you and reads your schedule, grades, transcript, "
             "attendance, exam seats, course announcements and course files. It is read-only: it never submits, "
             "registers, evaluates, uploads or pays anything. Your password is stored securely by the app and is "
-            "only ever sent to those two GIU sites. Free for non-commercial use (PolyForm Noncommercial 1.0.0)."
+            "only ever sent to those two GIU sites. Once a day it asks pypi.org whether a newer version exists "
+            "(nothing about you is sent) and tells you in the chat when there is one. "
+            "Free for non-commercial use (PolyForm Noncommercial 1.0.0)."
         ),
         "author": {"name": "Youssef-Hany-codes", "url": "https://github.com/Youssef-Hany-codes"},
         "repository": {"type": "git", "url": REPO},

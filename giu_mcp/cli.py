@@ -16,8 +16,12 @@ CLIENTS = ["claude-code", "claude-desktop", "cursor", "vscode", "windsurf", "gem
 
 def _launch_command() -> tuple[str, list[str]]:
     """How an AI app should start this server on this machine."""
-    if any(part.startswith("archive-v") for part in Path(sys.executable).parts):
-        return "uvx", ["giu-mcp"]  # running via `uvx giu-mcp`: its cache path isn't stable
+    from .updates import install_kind
+
+    if install_kind() == "uvx":
+        # `@latest` makes uvx check PyPI each time the app starts the server, so new
+        # releases arrive without any action (plain `uvx giu-mcp` keeps its first copy).
+        return "uvx", ["giu-mcp@latest"]
     exe = shutil.which("giu-mcp")
     if exe and Path(exe).resolve().parent != Path(sys.executable).resolve().parent:
         return exe, []  # installed as a tool (pipx / uv tool): stable path on PATH
@@ -87,6 +91,13 @@ def cmd_status(args) -> int:
         print(f"Could not reach GIU: {e}")
         return 1
     print(f"Downloads go to: {settings.download_dir}")
+    from .updates import how_to_update, install_kind, is_newer, latest_version
+
+    latest = latest_version(force=True)
+    if latest and is_newer(latest, __version__):
+        print(f"Update available: {latest} (you have {__version__}). {how_to_update(install_kind())}")
+    elif latest:
+        print(f"Up to date (latest release: {latest}).")
     return 0
 
 
