@@ -97,7 +97,7 @@ def cmd_status(args) -> int:
     if latest and is_newer(latest, __version__):
         print(f"Update available: {latest} (you have {__version__}). {how_to_update(install_kind())}")
     elif latest:
-        print(f"Up to date (latest release: {latest}).")
+        print(f"Up to date ({__version__}).")
     return 0
 
 
