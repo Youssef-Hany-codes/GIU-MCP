@@ -211,13 +211,6 @@ locked dependencies itself, so one `.mcpb` file works on Windows, macOS and Linu
 `.discovery/`). It also generates `manifest.json`, including the tool and prompt lists,
 from the server itself, so the manifest can't drift from the code.
 
-### Logo
-
-The logo files live in `assets/` (SVG and PNG; colours `#1A1A1A`, `#DD0000`,
-`#FFCE00`). `scripts/make_brand_assets.py` regenerates the extension icon, the MCP
-server icon and `assets/social-preview.png` from them. Run it again after changing the
-logo, then rebuild the extension.
-
 ## License
 
 [PolyForm Noncommercial 1.0.0](https://github.com/Youssef-Hany-codes/GIU-MCP/blob/main/LICENSE). In plain words (the license text is what counts):
